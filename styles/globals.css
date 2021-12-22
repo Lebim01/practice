@@ -28,6 +28,7 @@ a {
   --bs-dark-font-color: #FFFFFF;
   --bs-dark-borders: #FFFFFF;
   --bs-dark-input-bg: #2D3748;
+  --bs-dark-card-header-bg: #202837;
 }
 
 .form-control {
@@ -48,4 +49,16 @@ a {
   border-radius: 3px;
   text-align: center;
   font-size: 12px;
+}
+
+.card {
+  border: unset !important;
+}
+
+.card-header {
+  background-color: var(--bs-dark-card-header-bg) !important;
+}
+
+.card-body {
+  background-color: var(--bs-dark-input-bg) !important;
 }

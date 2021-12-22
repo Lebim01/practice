@@ -22,14 +22,7 @@ const defaultState: ISidemenuContext = {
 const SidemenuContext = React.createContext<ISidemenuContext>(defaultState);
 
 const SidemenuContextProvider = ({children}: Props) => {
-  const { deviceSize } = useWindowSize()
-  const { pathname } = useRouter()
-  const isOffcanvas = useMemo(() => deviceSize <= LG, [deviceSize])
-  const [open, setOpen] = useState<boolean>(isOffcanvas ? false : defaultState.open);
-
-  useEffect(() => {
-    if(isOffcanvas) setOpen(false)
-  }, [pathname])
+  const [open, setOpen] = useState<boolean>(defaultState.open);
 
   const toggle = () => {
     setOpen(open => !open)

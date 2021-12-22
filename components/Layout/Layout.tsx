@@ -31,6 +31,8 @@ const LayoutBodyContainer = styled.div`
   flex-direction: column;
   flex: 1;
   min-height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
 `
 
 const CustomBody = styled(Body)`
