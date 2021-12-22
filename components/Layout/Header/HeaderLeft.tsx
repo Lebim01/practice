@@ -5,15 +5,21 @@ import { BiMenu } from 'react-icons/bi'
 import { useSidemenu } from 'context/sidemenu'
 
 const HeaderLeft  = () => {
-  const { toggle } = useSidemenu()
-  
   return (
     <HeaderLeftContainer>
-      <CustomButton onClick={toggle}>
-        <BiMenu size={25} />
-      </CustomButton>
+      <ToggleSidemenuButton />
       <SearchInput />
     </HeaderLeftContainer>
+  )
+}
+
+export const ToggleSidemenuButton = () => {
+  const { toggle } = useSidemenu()
+
+  return (
+    <CustomButton onClick={toggle}>
+      <BiMenu size={25} />
+    </CustomButton>
   )
 }
 
@@ -23,7 +29,7 @@ const HeaderLeftContainer = styled.div`
   gap: 10px;
 `
 
-const CustomButton = styled(Button)`
+export const CustomButton = styled(Button)`
   padding: unset !important;
   background-color: unset !important;
   border: unset !important;

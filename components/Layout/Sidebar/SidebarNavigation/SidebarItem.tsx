@@ -6,6 +6,7 @@ import Link from 'next/Link'
 interface Props {
   path: IPath;
   sidemenu?: boolean;
+  className?: string;
 }
 
 const SidebarItem = ({ sidemenu = true, ...props }: Props) => {
@@ -13,7 +14,7 @@ const SidebarItem = ({ sidemenu = true, ...props }: Props) => {
 
   if(!sidemenu){
     return (
-      <SidebarItemContainer>
+      <SidebarItemContainer className={props.className}>
         <SidebarItemColor color={props.path.color} />
         <SidebarItemText>{props.path.title}</SidebarItemText>
       </SidebarItemContainer>
@@ -22,7 +23,7 @@ const SidebarItem = ({ sidemenu = true, ...props }: Props) => {
 
   return (
     <Link href={props.path.url} shallow>
-      <SidebarItemContainer active={props.path.url === currentPath.url} sidemenu={sidemenu}>
+      <SidebarItemContainer active={props.path.url === currentPath.url} sidemenu={sidemenu} className={props.className}>
         <SidebarItemColor color={props.path.color} />
         <SidebarItemText>{props.path.title}</SidebarItemText>
       </SidebarItemContainer>
@@ -34,7 +35,6 @@ const SidebarItemContainer = styled.div<any>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-left: 29px;
   padding-top: 5px;
   padding-bottom: 5px;
   ${props => props.active && `

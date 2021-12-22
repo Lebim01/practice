@@ -1,5 +1,6 @@
 import { usePath } from 'context/path'
-import { ReactElement } from 'react'
+import useWindowSize, { MD } from 'hooks/useWindowSize'
+import { ReactElement, useMemo } from 'react'
 import styled, { CSSProperties } from 'styled-components'
 import SidebarItem from './Sidebar/SidebarNavigation/SidebarItem'
 
@@ -11,9 +12,12 @@ interface Props {
 
 const Body = ({ children, ...props }: Props) => {
   const { path } = usePath()
+  const { deviceSize } = useWindowSize()
+  const isMobile = useMemo(() => deviceSize <= MD, [deviceSize])
+
   return (
     <BodyContainer {...props}>
-      <SidebarItem path={path} sidemenu={false} />
+      {!isMobile && <SidebarItem path={path} sidemenu={false} />}
       <br />
       {children}
     </BodyContainer>

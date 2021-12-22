@@ -30,6 +30,7 @@ const LayoutBodyContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 100vh;
 `
 
 const CustomBody = styled(Body)`

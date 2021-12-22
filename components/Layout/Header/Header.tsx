@@ -1,21 +1,26 @@
-import styled from 'styled-components'
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
+import { Navbar, Container, Nav } from 'react-bootstrap'
 import HeaderLeft from './HeaderLeft'
 import HeaderRight from './HeaderRight'
+import useWindowSize, { LG, MD } from 'hooks/useWindowSize'
+import ResponsiveHeader from './ResponsiveHeader/ResponsiveHeader'
 
 const Header = () => {
+  const { deviceSize } = useWindowSize()
+
+  if(deviceSize <= MD){
+    // phone header
+    return <ResponsiveHeader />
+  }
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <HeaderLeft />
-          </Nav>
-          <Nav>
-            <HeaderRight />
-          </Nav>
-        </Navbar.Collapse>
+        <Nav className="me-auto">
+          <HeaderLeft />
+        </Nav>
+        <Nav>
+          <HeaderRight />
+        </Nav>
       </Container>
     </Navbar>
   )
