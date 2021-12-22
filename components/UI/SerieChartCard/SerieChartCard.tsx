@@ -1,12 +1,15 @@
-import React, { useCallback, useState, useRef } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { IResponseSerieData, IResponseSerieMetaData, ISerie } from "interfaces/ISeries"
-import {Card} from 'react-bootstrap'
-import {BsPlus} from 'react-icons/bs'
+import {Button, Card} from 'react-bootstrap'
+import {BsPlus, BsListUl, BsChevronDown, BsChevronLeft} from 'react-icons/bs'
+import {BiLineChart} from 'react-icons/bi'
 import Separator from './Separator'
-import { useMemo } from 'react'
 import LineChart from 'components/UI/Chart/LineChart'
 import MiniLineChart from '../Chart/MiniLineChart'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleChart, toggleSerie, toggleDataTable } from 'redux/actions/series'
+import {IReduxState} from 'interfaces/IRedux'
 
 interface Props {
   serie: ISerie;
@@ -31,10 +34,27 @@ const formatData = (item: IResponseSerieData): { name: string, value: number } =
 }
 
 const SerieChartCard = React.memo((props: Props) => {
+  const dispatch = useDispatch()
+  const isOpenChart = useSelector((state: IReduxState) => !!state.series.uncollapsedSeriesCharts.find(r => r.serieId === props.serie.serieId))
+  const isOpenCard = useSelector((state: IReduxState) => !!state.series.uncollapsedSeries.find(r => r.serieId === props.serie.serieId))
+  const isOpenTable = useSelector((state: IReduxState) => state.series.openedTableSerie?.serieId === props.serie.serieId)
+
   const ultimoValor = useMemo(() => props.data[props.data.length-1], [props.data])
   const penultimoValor = useMemo(() => props.data[props.data.length-2], [props.data])
   const cambioPorcentual = useMemo(() => calcCambioPorcentual(ultimoValor, penultimoValor), [ultimoValor, penultimoValor])
   const chartData = useMemo(() => props.data.map(formatData), [props.data])
+
+  const _toggleChart = () => {
+    dispatch(toggleChart(props.serie))
+  }
+
+  const _toggleSerie = () => {
+    dispatch(toggleSerie(props.serie))
+  }
+
+  const _toggleDataTable = () => {
+    dispatch(toggleDataTable(props.serie))
+  }
 
   return (
     <Card>
@@ -49,9 +69,20 @@ const SerieChartCard = React.memo((props: Props) => {
         {props.metadata.fechaFin}
         <Separator />
         <MiniLineChart width={100} height={35} data={chartData} />
+        <CustomButton active={isOpenChart} variant="outline-dark" onClick={_toggleChart}>
+          <BiLineChart size={20} />
+        </CustomButton>
+        <CustomButton active={isOpenTable} variant='outline-dark' onClick={_toggleDataTable}>
+          <BsListUl size={20} />
+        </CustomButton>
+        <HeaderRight>
+          <CustomButtonOutlined variant='outline-dark' onClick={_toggleSerie}>
+            {isOpenCard ? <BsChevronDown /> : <BsChevronLeft />}
+          </CustomButtonOutlined>
+        </HeaderRight>
       </CustomHeader>
 
-      <CustomBody>
+      <CustomBody open={isOpenCard}>
         <div style={{ overflow: 'auto', paddingBottom: 10 }}>
           <Table>
             <thead>
@@ -88,7 +119,9 @@ const SerieChartCard = React.memo((props: Props) => {
         </div>
         <br />
 
-        <LineChart width={'100%'} height={300} data={chartData} />
+        <BodyChart open={isOpenChart}>
+          {isOpenChart && <LineChart width={'100%'} height={300} data={chartData} />}
+        </BodyChart>
       </CustomBody>
     </Card>
   )
@@ -119,11 +152,17 @@ const CustomHeader = styled(Card.Header)`
   font-size: 14px;
 `
 
+const HeaderRight = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+`
+
 const CustomBody = styled(Card.Body)`
   background-color: #202837 !important;
   font-size: 12px;
   max-width: 100%;
-  transition: height 0.5s;
+  display: ${props => props.open ? 'unset' : 'none'};
 `
 
 const Table = styled.table`
@@ -148,6 +187,25 @@ const CambioPorcentual = styled.div<any>`
   svg {
     fill: ${props => props.value > 0 ? '#48BB78' : '#E31B0D' };
   }
+`
+
+const CustomButton = styled(Button)`
+  padding: 5px 8px !important;
+  ${props => props.active && `
+    background-color: #FFFFFF !important;
+    * {
+      color: #000 !important;
+    }
+  `}
+`
+
+const CustomButtonOutlined = styled(CustomButton)`
+  border: unset;
+`
+
+const BodyChart = styled.div<any>`
+  height: ${props => props.open ? '300px' : '0px'};
+  transition: height 0.5s;
 `
 
 export default SerieChartCard

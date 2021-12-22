@@ -40,30 +40,38 @@ export default function(state = defaultState, action: IReduxAction = { type: '',
     case TYPES.REORDER_SERIES:
       return {...state, series: action.payload}
 
-    case TYPES.COLLAPSE_SERIE:
-      /**
-       * delete serie from uncollapsedSeries
-       */
-      const _uncollapsedSeries = [...state.uncollapsedSeries]
-      const _index = _uncollapsedSeries.findIndex(r => r.serieId === action.payload.serieId)
-      if(_index > -1){
-        _uncollapsedSeries.splice(_index, 1)
-      }
-      return {...state, uncollapsedSeries: _uncollapsedSeries }
-
-    case TYPES.UNCOLLAPSE_SERIE:
+    case TYPES.TOGGLE_SERIE:
       /**
        * add serie to uncollapsedSeries
        */
        const __uncollapsedSeries = [...state.uncollapsedSeries]
        const __index = __uncollapsedSeries.findIndex(r => r.serieId === action.payload.serieId)
-       if(__index === 0){
-         __uncollapsedSeries.push(action.payload)
+       if(__index > -1){
+        __uncollapsedSeries.splice(__index, 1)
+       }else{
+        __uncollapsedSeries.push(action.payload)
        }
        return {...state, uncollapsedSeries: __uncollapsedSeries }
 
-    case TYPES.OPEN_TABLE_SERIE:
-      return {...state, openedTableSerie: action.payload}
+    case TYPES.TOGGLE_DATATABLE:
+      let openedTableSerie = undefined
+      if(state.openedTableSerie){
+        if(state.openedTableSerie.serieId !== action.payload.serieId) openedTableSerie = action.payload
+      }else{
+        openedTableSerie = action.payload
+      }
+      return {...state, openedTableSerie}
+
+    case TYPES.TOGGLE_CHART_SERIE:
+      const ___index = state.uncollapsedSeriesCharts.findIndex(r => r.serieId === action.payload.serieId)
+      const _uncollapsedSeriesCharts = [...state.uncollapsedSeriesCharts]
+      if(___index > -1){
+        _uncollapsedSeriesCharts.splice(___index, 1)
+      }else{
+        _uncollapsedSeriesCharts.push(action.payload)
+      }
+      return {...state, uncollapsedSeriesCharts: _uncollapsedSeriesCharts}
+
     default:
       return state;
   }

@@ -3,10 +3,10 @@ import { ISeriesCatalog, ISerie } from "interfaces/ISeries"
 export const TYPES = {
   "SET_CATALOG": "SERIES.SET_CATALOG",
   "SET_CATALOG_SERIES": "SERIES.SET_CATALOG_SERIES",
-  "UNCOLLAPSE_SERIE": "SERIES.UNCOLLAPSE_SERIE",
-  "COLLAPSE_SERIE": "SERIES.COLLAPSE_SERIE",
-  "OPEN_TABLE_SERIE": "SERIES.OPEN_TABLE_SERIE",
-  "REORDER_SERIES": "SERIES.REORDER_SERIES"
+  "TOGGLE_SERIE": "SERIES.TOGGLE_SERIE",
+  "TOGGLE_DATATABLE": "SERIES.TOGGLE_DATATABLE",
+  "REORDER_SERIES": "SERIES.REORDER_SERIES",
+  "TOGGLE_CHART_SERIE": "SERIES.TOGGLE_CHART_SERIE"
 }
 
 export const setCatalog = (catalog: ISeriesCatalog) => {
@@ -23,23 +23,23 @@ export const setCatalogSeries = (serie: ISerie) => {
   }
 }
 
-export const uncollapseSerie = (serie: ISerie) => {
+export const toggleSerie = (serie: ISerie) => {
   return {
-    type: TYPES.UNCOLLAPSE_SERIE,
+    type: TYPES.TOGGLE_SERIE,
     payload: serie
   }
 }
 
-export const collapseSerie = (serie: ISerie) => {
+export const toggleDataTable = (serie: ISerie) => {
   return {
-    type: TYPES.COLLAPSE_SERIE,
+    type: TYPES.TOGGLE_DATATABLE,
     payload: serie
   }
 }
 
-export const openTableSerie = (serie: ISerie) => {
+export const toggleChart = (serie: ISerie) => {
   return {
-    type: TYPES.OPEN_TABLE_SERIE,
+    type: TYPES.TOGGLE_CHART_SERIE,
     payload: serie
   }
 }
