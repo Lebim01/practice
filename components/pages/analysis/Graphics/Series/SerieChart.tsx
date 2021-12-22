@@ -38,7 +38,7 @@ const SerieChart = (props: Props) => {
   if(!serieData?.data || !serieData?.metadata) return null
 
   return (
-    <SerieChartCard serie={props.serie} metadata={serieData.metadata} data={serieData.data} />
+    <SerieChartCard serie={serieData} />
   )
 }
 

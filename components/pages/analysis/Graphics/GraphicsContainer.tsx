@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import axios from 'axios'
 import SeriesCatalog from './Series/SeriesCatalog'
+import SeriesDataTable from './Series/SerieDataTable'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCatalog } from 'redux/actions/series'
 import { IReduxState } from 'interfaces/IRedux'
+import useWindowSize, { LG } from 'hooks/useWindowSize'
 
 const GraphicsContainer = () => {
   const dispatch = useDispatch()
   const [error, setError] = useState<string | null>(null)
   const dataCatalog = useSelector((state: IReduxState) => state.series.dataCatalog)
+  const isOpenDataTable = useSelector((state: IReduxState) => !!state.series.openedTableSerie)
+  const { deviceSize } = useWindowSize()
+
+  const responsive = deviceSize <= LG
 
   const loadCatalog = async () => {
     try {
@@ -28,10 +35,18 @@ const GraphicsContainer = () => {
   if(dataCatalog.series.length === 0) return null
 
   return (
-    <div>
+    <CustomGraphicsContainer responsive={responsive}>
       <SeriesCatalog catalog={dataCatalog} />
-    </div>
+      {isOpenDataTable && <SeriesDataTable />}
+    </CustomGraphicsContainer>
   )
 }
+
+const CustomGraphicsContainer = styled.div<any>`
+  display: flex;
+  flex-direction: ${props => props.responsive ? 'column' : 'row'};
+  gap: 5px;
+  flex: 1;
+`
 
 export default GraphicsContainer

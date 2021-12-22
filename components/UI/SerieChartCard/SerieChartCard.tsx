@@ -2,19 +2,18 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { IResponseSerieData, IResponseSerieMetaData, ISerie } from "interfaces/ISeries"
 import {Button, Card} from 'react-bootstrap'
-import {BsPlus, BsListUl, BsChevronDown, BsChevronLeft} from 'react-icons/bs'
-import {BiLineChart} from 'react-icons/bi'
+import {BsPlus, BsChevronDown, BsChevronLeft} from 'react-icons/bs'
 import Separator from './Separator'
 import LineChart from 'components/UI/Chart/LineChart'
 import MiniLineChart from '../Chart/MiniLineChart'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleChart, toggleSerie, toggleDataTable } from 'redux/actions/series'
+import { toggleSerie } from 'redux/actions/series'
 import {IReduxState} from 'interfaces/IRedux'
+import useWindowSize, { MD } from 'hooks/useWindowSize'
+import ToggleButtons from './SerieToggleButtons'
 
 interface Props {
   serie: ISerie;
-  metadata: IResponseSerieMetaData;
-  data: IResponseSerieData[];
 }
 
 const parseNumber = (value: string): number => {
@@ -34,47 +33,41 @@ const formatData = (item: IResponseSerieData): { name: string, value: number } =
 }
 
 const SerieChartCard = React.memo((props: Props) => {
+  const { deviceSize } = useWindowSize()
+
   const dispatch = useDispatch()
   const isOpenChart = useSelector((state: IReduxState) => !!state.series.uncollapsedSeriesCharts.find(r => r.serieId === props.serie.serieId))
   const isOpenCard = useSelector((state: IReduxState) => !!state.series.uncollapsedSeries.find(r => r.serieId === props.serie.serieId))
-  const isOpenTable = useSelector((state: IReduxState) => state.series.openedTableSerie?.serieId === props.serie.serieId)
 
-  const ultimoValor = useMemo(() => props.data[props.data.length-1], [props.data])
-  const penultimoValor = useMemo(() => props.data[props.data.length-2], [props.data])
+  const ultimoValor = useMemo(() => props.serie.data![props.serie.data!.length-1], [props.serie.data])
+  const penultimoValor = useMemo(() => props.serie.data![props.serie.data!.length-2], [props.serie.data])
   const cambioPorcentual = useMemo(() => calcCambioPorcentual(ultimoValor, penultimoValor), [ultimoValor, penultimoValor])
-  const chartData = useMemo(() => props.data.map(formatData), [props.data])
-
-  const _toggleChart = () => {
-    dispatch(toggleChart(props.serie))
-  }
+  const chartData = useMemo(() => props.serie.data!.map(formatData), [props.serie.data])
 
   const _toggleSerie = () => {
     dispatch(toggleSerie(props.serie))
   }
 
-  const _toggleDataTable = () => {
-    dispatch(toggleDataTable(props.serie))
-  }
+  const responsive = deviceSize <=  MD
 
   return (
-    <Card>
+    <CustomCard>
       <CustomHeader>
         {props.serie.name}
-        <Separator />
-        <AlignCenter>
-          <Puntito /> 
-          {ultimoValor.dato}
-        </AlignCenter>
-        <Separator />
-        {props.metadata.fechaFin}
-        <Separator />
-        <MiniLineChart width={100} height={35} data={chartData} />
-        <CustomButton active={isOpenChart} variant="outline-dark" onClick={_toggleChart}>
-          <BiLineChart size={20} />
-        </CustomButton>
-        <CustomButton active={isOpenTable} variant='outline-dark' onClick={_toggleDataTable}>
-          <BsListUl size={20} />
-        </CustomButton>
+        {!responsive && 
+          <>
+            <Separator />
+            <AlignCenter>
+              <Puntito /> 
+              {ultimoValor.dato}
+            </AlignCenter>
+            <Separator />
+            {props.serie.metadata!.fechaFin}
+            <Separator />
+            <MiniLineChart width={100} height={35} data={chartData} />
+            <ToggleButtons serie={props.serie} />
+          </>
+        }
         <HeaderRight>
           <CustomButtonOutlined variant='outline-dark' onClick={_toggleSerie}>
             {isOpenCard ? <BsChevronDown /> : <BsChevronLeft />}
@@ -104,36 +97,54 @@ const SerieChartCard = React.memo((props: Props) => {
                 <td>{props.serie.name}</td>
                 <td>{ultimoValor.fecha}</td>
                 <td>{ultimoValor.dato}</td>
-                <td>{props.metadata.unidad}</td>
+                <td>{props.serie.metadata!.unidad}</td>
                 <td>
                   <CambioPorcentual value={cambioPorcentual}>
                     <BsPlus size={12} />{cambioPorcentual}%{' '}
                   </CambioPorcentual>
                 </td>
-                <td>{props.data[0].dato}</td>
-                <td>{props.data[0].fecha}</td>
-                <td>{props.metadata.periodicidad}</td>
+                <td>{props.serie.data![0].dato}</td>
+                <td>{props.serie.data![0].fecha}</td>
+                <td>{props.serie.metadata!.periodicidad}</td>
               </tr>
             </tbody>
           </Table>
         </div>
+
+        {responsive && 
+          <AlignHorizontal>
+            <ToggleButtons serie={props.serie} />
+          </AlignHorizontal>
+        }
+
         <br />
 
         <BodyChart open={isOpenChart}>
           {isOpenChart && <LineChart width={'100%'} height={300} data={chartData} />}
         </BodyChart>
       </CustomBody>
-    </Card>
+    </CustomCard>
   )
 })
 
 SerieChartCard.displayName = 'SerieChartCard'
+
+const CustomCard = styled(Card)`
+  border-top: 5px solid #202837 !important;
+  border-bottom: 5px solid #202837 !important;
+`
 
 const AlignCenter = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 5px;
+`
+
+const AlignHorizontal = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `
 
 const Puntito = styled.div`
@@ -150,6 +161,7 @@ const CustomHeader = styled(Card.Header)`
   gap: 10px;
   align-items: center;
   font-size: 14px;
+  border: unset !important;
 `
 
 const HeaderRight = styled.div`
@@ -189,17 +201,7 @@ const CambioPorcentual = styled.div<any>`
   }
 `
 
-const CustomButton = styled(Button)`
-  padding: 5px 8px !important;
-  ${props => props.active && `
-    background-color: #FFFFFF !important;
-    * {
-      color: #000 !important;
-    }
-  `}
-`
-
-const CustomButtonOutlined = styled(CustomButton)`
+const CustomButtonOutlined = styled(Button)`
   border: unset;
 `
 

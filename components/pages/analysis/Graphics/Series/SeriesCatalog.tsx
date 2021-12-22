@@ -9,7 +9,7 @@ interface Props {
 
 const SeriesCatalog = (props: Props) => {
   return (
-    <Card>
+    <Card style={{ flex: 1 }}>
       <Card.Header>{props.catalog.name}</Card.Header>
       <CustomBody>
         {props.catalog.series.map((serie, idx) => 
@@ -24,6 +24,7 @@ const CustomBody = styled(Card.Body)`
   display: flex;
   flex-direction: column;
   gap: 11px;
+  height: 100%;
 `
 
 export default SeriesCatalog

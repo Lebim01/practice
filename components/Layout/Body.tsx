@@ -18,7 +18,6 @@ const Body = ({ children, ...props }: Props) => {
   return (
     <BodyContainer {...props}>
       {!isMobile && <SidebarItem path={path} sidemenu={false} />}
-      <br />
       {children}
     </BodyContainer>
   )
@@ -28,6 +27,9 @@ const Body = ({ children, ...props }: Props) => {
 const BodyContainer = styled.div`
   background-color: var(--bs-dark-bg);
   padding: 25px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `
 
 export default Body
