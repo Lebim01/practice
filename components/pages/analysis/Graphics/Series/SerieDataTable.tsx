@@ -2,6 +2,7 @@ import useWindowSize, { LG } from "hooks/useWindowSize"
 import { IReduxState } from "interfaces/IRedux"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
+import {BsListUl} from 'react-icons/bs'
 
 const SeriesDataTable = () => {
   const datatable = useSelector((state: IReduxState) => state.series.openedTableSerie)
@@ -11,6 +12,10 @@ const SeriesDataTable = () => {
 
   return (
     <SerieDataTable responsive={responsive}>
+      <DataTableTitle>
+        <BsListUl size={20} />
+        <span>{datatable?.name}</span>
+      </DataTableTitle>
       <Table>
         <thead>
           <tr>
@@ -35,6 +40,14 @@ const SerieDataTable = styled.div<any>`
   width: ${props => props.responsive ? '100%' : '320px'};
   border: 1px solid white;
   border-radius: 4px;
+`
+
+const DataTableTitle = styled.div`
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 `
 
 const Table = styled.table`
