@@ -11,7 +11,7 @@ const SidebarNavigation = (props: Props) => {
   return (
     <SidebarNavigationContainer {...props}>
       {paths.map((path) => 
-        <SidebarItem key={path.key} path={path} />
+        <SidebarItem key={path.url} path={path} />
       )}
     </SidebarNavigationContainer>
   )
@@ -20,6 +20,7 @@ const SidebarNavigation = (props: Props) => {
 const SidebarNavigationContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 5px;
 `
 
 export default SidebarNavigation

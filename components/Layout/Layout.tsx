@@ -1,16 +1,21 @@
+import { ReactElement } from 'react'
 import styled from 'styled-components'
 
 import Body from './Body'
 import Header from './Header'
 import Sidebar from './Sidebar'
 
-const Layout = () => {
+interface Props {
+  children?: ReactElement;
+}
+
+const Layout = (props: Props) => {
   return (
     <LayoutContainer>
       <Sidebar />
       <LayoutBodyContainer>
         <Header />
-        <CustomBody />
+        <CustomBody>{props.children}</CustomBody>
       </LayoutBodyContainer>
     </LayoutContainer>
   )

@@ -1,7 +1,7 @@
 interface IPath {
   color: string;
   title: string;
-  key: string;
+  url: string;
 }
 
 export default IPath
