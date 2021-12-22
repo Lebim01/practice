@@ -36,15 +36,6 @@ const SerieChartCard = React.memo((props: Props) => {
   const cambioPorcentual = useMemo(() => calcCambioPorcentual(ultimoValor, penultimoValor), [ultimoValor, penultimoValor])
   const chartData = useMemo(() => props.data.map(formatData), [props.data])
 
-  const bodyRef = useRef(null)
-  const bodyRefCallback = useCallback((node) => {
-    if(node){
-      bodyRef.current = node
-      setBodyInit(true)
-    }
-  }, [])
-  const [bodyInit, setBodyInit] = useState<boolean>(false)
-
   return (
     <Card>
       <CustomHeader>
@@ -60,39 +51,41 @@ const SerieChartCard = React.memo((props: Props) => {
         <MiniLineChart width={100} height={35} data={chartData} />
       </CustomHeader>
 
-      <CustomBody ref={bodyRefCallback}>
-        <Table>
-          <thead>
-            <tr>
-              <td>Serie ID</td>
-              <td>Título</td>
-              <td>Última fecha</td>
-              <td>Último valor</td>
-              <td>Unidad</td>
-              <td>Cambio porcentual(%)</td>
-              <td>Fecha inicio</td>
-              <td>Fecha fin</td>
-              <td>Periodicidad</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{props.serie.serieId}</td>
-              <td>{props.serie.name}</td>
-              <td>{ultimoValor.fecha}</td>
-              <td>{ultimoValor.dato}</td>
-              <td>{props.metadata.unidad}</td>
-              <td>
-                <CambioPorcentual value={cambioPorcentual}>
-                  <BsPlus size={12} />{cambioPorcentual}%{' '}
-                </CambioPorcentual>
-              </td>
-              <td>{props.data[0].dato}</td>
-              <td>{props.data[0].fecha}</td>
-              <td>{props.metadata.periodicidad}</td>
-            </tr>
-          </tbody>
-        </Table>
+      <CustomBody>
+        <div style={{ overflow: 'auto', paddingBottom: 10 }}>
+          <Table>
+            <thead>
+              <tr>
+                <td>Serie ID</td>
+                <td>Título</td>
+                <td>Última fecha</td>
+                <td>Último valor</td>
+                <td>Unidad</td>
+                <td>Cambio porcentual(%)</td>
+                <td>Fecha inicio</td>
+                <td>Fecha fin</td>
+                <td>Periodicidad</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{props.serie.serieId}</td>
+                <td>{props.serie.name}</td>
+                <td>{ultimoValor.fecha}</td>
+                <td>{ultimoValor.dato}</td>
+                <td>{props.metadata.unidad}</td>
+                <td>
+                  <CambioPorcentual value={cambioPorcentual}>
+                    <BsPlus size={12} />{cambioPorcentual}%{' '}
+                  </CambioPorcentual>
+                </td>
+                <td>{props.data[0].dato}</td>
+                <td>{props.data[0].fecha}</td>
+                <td>{props.metadata.periodicidad}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
         <br />
 
         <LineChart width={'100%'} height={300} data={chartData} />
@@ -135,10 +128,16 @@ const CustomBody = styled(Card.Body)`
 
 const Table = styled.table`
   width: 100%;
+  overflow: auto;
 
   td:not(:first-child) {
-    padding-left: 10px;
     border-left: 1px solid white;
+  }
+
+  td {
+    padding-left: 10px;
+    padding-right: 10px;
+    white-space: nowrap;
   }
 `
 

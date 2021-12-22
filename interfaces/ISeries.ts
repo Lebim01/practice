@@ -1,6 +1,8 @@
 export type ISerie = {
   name: string;
   serieId: string;
+  metadata?: IResponseSerieMetaData;
+  data?: IResponseSerieData[];
 }
 
 export type ISeriesCatalog = {

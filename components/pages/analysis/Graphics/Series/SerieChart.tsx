@@ -1,39 +1,44 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import SerieChartCard from "components/UI/SerieChartCard/SerieChartCard"
-import { IResponseSerieData, IResponseSerieMetaData, ISerie } from "interfaces/ISeries"
-import { useEffect } from 'react'
+import { IReduxState } from 'interfaces/IRedux'
+import { setCatalogSeries } from 'redux/actions/series'
+import { ISerie } from 'interfaces/ISeries'
 
 interface Props {
   serie: ISerie;
 }
 
 const SerieChart = (props: Props) => {
-  const [serieMetadata, setSerieMetadata] = useState<IResponseSerieMetaData | null>(null)
-  const [serieData, setSerieData] = useState<IResponseSerieData[] | null>(null)
+  const dispatch = useDispatch()
+  const serieData = useSelector((state: IReduxState) => state.series.series.find(r => r.serieId === props.serie.serieId))
   const [error, setError] = useState<string | null>(null)
 
   const loadData = async () => {
     try {
       const meta = await axios.get(`/api/bmx/${props.serie.serieId}`)
       const data = await axios.get(`/api/bmx/${props.serie.serieId}/datos`)
-      setSerieMetadata(meta.data)
-      setSerieData(data.data)
+      dispatch(setCatalogSeries({
+        ...props.serie,
+        metadata: meta.data,
+        data: data.data
+      }))
     }catch(err: any){
       setError(err.toString())
     }
   }
 
   useEffect(() => {
-    loadData()
+    if(!serieData?.data || !serieData?.metadata) loadData()
   }, [props.serie.serieId])
 
   if(error) return <p>{error}</p>
 
-  if(serieMetadata === null || serieData === null) return null
+  if(!serieData?.data || !serieData?.metadata) return null
 
   return (
-    <SerieChartCard serie={props.serie} metadata={serieMetadata} data={serieData} />
+    <SerieChartCard serie={props.serie} metadata={serieData.metadata} data={serieData.data} />
   )
 }
 
