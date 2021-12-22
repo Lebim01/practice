@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import styled from 'styled-components'
 
 import Body from './Body'
@@ -6,14 +5,12 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 
 const Layout = () => {
-  const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(true)
-
   return (
     <LayoutContainer>
       <Sidebar />
       <LayoutBodyContainer>
         <Header />
-        <Body />
+        <CustomBody />
       </LayoutBodyContainer>
     </LayoutContainer>
   )
@@ -27,6 +24,10 @@ const LayoutContainer = styled.div`
 const LayoutBodyContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
+`
+
+const CustomBody = styled(Body)`
   flex: 1;
 `
 

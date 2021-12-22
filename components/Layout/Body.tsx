@@ -1,8 +1,21 @@
+import styled, { CSSProperties } from 'styled-components'
 
-const Body = () => {
+interface Props {
+  className?: string;
+  style?: CSSProperties;
+}
+
+const Body = (props: Props) => {
   return (
-    <div>Body</div>
+    <BodyContainer {...props}>
+      Body
+    </BodyContainer>
   )
 
 }
+
+const BodyContainer = styled.div`
+  background-color: var(--bs-dark-bg);
+`
+
 export default Body

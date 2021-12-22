@@ -18,4 +18,34 @@ a {
 * {
   box-sizing: border-box;
   font-family: 'OpenSans' !important;
+  color: var(--bs-dark-font-color) !important;
+}
+
+:root {
+  --bs-dark-rgb: 13,13,13 !important;
+  --bs-dark-bg: #191f2b;
+  --bs-dark-sidebar-bg: #000000;
+  --bs-dark-font-color: #FFFFFF;
+  --bs-dark-borders: #FFFFFF;
+  --bs-dark-input-bg: #2D3748;
+}
+
+.form-control {
+  background-color: var(--bs-dark-input-bg) !important;
+}
+
+.badge-container {
+  position: relative;
+}
+
+.badge-notify {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  background:#F56565;
+  width: 14px;
+  height: 15px;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 12px;
 }

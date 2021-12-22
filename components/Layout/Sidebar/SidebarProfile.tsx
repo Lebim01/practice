@@ -21,10 +21,10 @@ const SidebarProfileContainer = styled.div`
   justify-content: center;
   padding-top: 25px;
   padding-bottom: 25px;
-  border-bottom: 1px solid #FFFFFF;
+  border-bottom: 1px solid var(--bs-dark-font-color);
 
   span {
-    color: #FFFFFF;
+    color: var(--bs-dark-font-color);
   }
 `
 

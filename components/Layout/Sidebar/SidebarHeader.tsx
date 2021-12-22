@@ -11,7 +11,7 @@ const Header = () => {
             <RiArrowUpDownLine color="black" />
           </Icon>
           <Text>
-            <Text>mx</Text>market
+            <Text color={'#56D1A1'}>mx</Text>market
           </Text>
         </CustomNarbarBrand>
       </Container>
@@ -20,8 +20,8 @@ const Header = () => {
 }
 
 const CustomNavbar = styled(Navbar)`
-  background-color: #000000 !important;
-  border-bottom: 1px solid #FFFFFF;
+  background-color: var(--bs-dark-sidebar-bg) !important;
+  border-bottom: 1px solid var(--bs-dark-borders);
 `
 
 const CustomNarbarBrand = styled(Navbar.Brand)`
@@ -35,16 +35,21 @@ const Icon = styled.div`
   height: 22px;
   background-color: #56D1A1;
   position: relative;
+  margin-right: 5px;
 
   svg {
     height: 20px;
     width: 20px;
     position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 `
 
 const Text = styled.span`
   letter-spacing: 0px;
+  ${props => props.color && `color: ${props.color}`}
 `
 
 export default Header

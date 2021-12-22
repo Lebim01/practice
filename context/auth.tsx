@@ -13,6 +13,7 @@ interface IAuthContext {
 const defaultUser: IUser = {
   photo: 'assets/front-view-elegant-businesswoman-holding-clipboard-with-copy-space_23-2148788842@2x.png',
   name: 'Alejandra Langford',
+  short_name: 'Alejandra',
   email: 'a.langford@mxmarket.mx'
 }
 
