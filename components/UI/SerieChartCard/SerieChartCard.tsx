@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { IResponseSerieData, IResponseSerieMetaData, ISerie } from "interfaces/ISeries"
+import { IResponseSerieData, ISerie } from "interfaces/ISeries"
 import {Button, Card} from 'react-bootstrap'
 import {BsPlus, BsChevronDown, BsChevronLeft} from 'react-icons/bs'
+import {RiDragMove2Line} from 'react-icons/ri'
 import Separator from './Separator'
 import LineChart from 'components/UI/Chart/LineChart'
 import MiniLineChart from '../Chart/MiniLineChart'
@@ -11,9 +12,22 @@ import { toggleSerie } from 'redux/actions/series'
 import {IReduxState} from 'interfaces/IRedux'
 import useWindowSize, { MD } from 'hooks/useWindowSize'
 import ToggleButtons from './SerieToggleButtons'
+import { useDraggable } from 'context/draggable'
 
 interface Props {
   serie: ISerie;
+  idx: number;
+}
+
+const getStyle = (provided: any, style: any) => {
+  if (!style) {
+    return provided.draggableProps.style;
+  }
+
+  return {
+    ...provided.draggableProps.style,
+    ...style,
+  };
 }
 
 const parseNumber = (value: string): number => {
@@ -35,6 +49,8 @@ const formatData = (item: IResponseSerieData): { name: string, value: number } =
 const SerieChartCard = React.memo((props: Props) => {
   const { deviceSize } = useWindowSize()
 
+  const { provided, isDragging } = useDraggable()
+
   const dispatch = useDispatch()
   const isOpenChart = useSelector((state: IReduxState) => !!state.series.uncollapsedSeriesCharts.find(r => r.serieId === props.serie.serieId))
   const isOpenCard = useSelector((state: IReduxState) => !!state.series.uncollapsedSeries.find(r => r.serieId === props.serie.serieId))
@@ -48,10 +64,20 @@ const SerieChartCard = React.memo((props: Props) => {
     dispatch(toggleSerie(props.serie))
   }
 
+  const miniChart = useMemo(() => <MiniLineChart width={100} height={35} data={chartData} />, [chartData])
+
   const responsive = deviceSize <=  MD
 
   return (
-    <CustomCard className="serie-card">
+    <CustomCard 
+      className="serie-card"
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      style={getStyle(provided, {})}
+      data-is-dragging={isDragging}
+      data-testid={props.serie.serieId}
+      data-index={props.idx}
+    >
       <CustomHeader>
         <span className='card-serie-name'>{props.serie.name}</span>
         {!responsive && 
@@ -64,11 +90,14 @@ const SerieChartCard = React.memo((props: Props) => {
             <Separator />
             {props.serie.metadata!.fechaFin}
             <Separator />
-            <MiniLineChart width={100} height={35} data={chartData} />
+            {miniChart}
             <ToggleButtons serie={props.serie} />
           </>
         }
         <HeaderRight>
+          <CustomButtonOutlined className="drag-indicator" variant='outline-dark' {...provided.dragHandleProps}>
+            <RiDragMove2Line size={20} />
+          </CustomButtonOutlined>
           <CustomButtonOutlined className="serie-toggle-card" variant='outline-dark' onClick={_toggleSerie}>
             {isOpenCard ? <BsChevronDown /> : <BsChevronLeft />}
           </CustomButtonOutlined>

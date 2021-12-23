@@ -24,8 +24,8 @@ const SeriesDataTable = () => {
           </tr>
         </thead>
         <tbody>
-          {datatable && datatable.data && datatable.data.map((data => 
-            <tr>
+          {datatable && datatable.data && datatable.data.map(((data, idx) => 
+            <tr key={idx}>
               <td>{data.fecha}</td>
               <td>{data.dato}</td>
             </tr>  

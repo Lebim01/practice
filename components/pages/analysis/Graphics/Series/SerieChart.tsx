@@ -8,6 +8,7 @@ import { ISerie } from 'interfaces/ISeries'
 
 interface Props {
   serie: ISerie;
+  idx: number;
 }
 
 const SerieChart = (props: Props) => {
@@ -38,7 +39,7 @@ const SerieChart = (props: Props) => {
   if(!serieData?.data || !serieData?.metadata) return null
 
   return (
-    <SerieChartCard serie={serieData} />
+    <SerieChartCard idx={props.idx} serie={serieData} />
   )
 }
 
