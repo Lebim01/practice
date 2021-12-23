@@ -12,6 +12,8 @@ yarn dev
 
 ## Test with jest
 
+This test if api works
+
 ```bash
 npm run test
 # or
