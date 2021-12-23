@@ -53,7 +53,7 @@ const SerieChartCard = React.memo((props: Props) => {
   return (
     <CustomCard className="serie-card">
       <CustomHeader>
-        {props.serie.name}
+        <span className='card-serie-name'>{props.serie.name}</span>
         {!responsive && 
           <>
             <Separator />

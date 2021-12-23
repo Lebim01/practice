@@ -83,6 +83,32 @@ describe('Analysis page', () => {
 
             await card.findElement(By.css('.recharts-responsive-container'))
         })
+
+        test('toggle datatable', async () => {
+            const card1 = await findElementBy(By.css('.serie-cards .serie-card:nth-child(1)'))
+            const card2 = await findElementBy(By.css('.serie-cards .serie-card:nth-child(2)'))
+
+            const card1Title = await card1.findElement(By.css('.card-serie-name'))
+            const card2Title = await card2.findElement(By.css('.card-serie-name'))
+
+            const toggleList1 = await card1.findElement(By.css('.serie-toggle-data-table'))
+            const toggleList2 = await card2.findElement(By.css('.serie-toggle-data-table'))
+
+            toggleList1.click()
+            await wait(500)
+
+            const datatable = await findElementBy(HomePage.dataTableTitle)
+            const dataTableTitle = await findElementBy(HomePage.dataTableTitle)
+            expect(await datatable.isDisplayed()).toBe(true)
+
+            expect(await dataTableTitle.getText()).toBe(await card1Title.getText())
+
+            driver.executeScript("arguments[0].click()", toggleList2); 
+
+            await wait(500)
+
+            expect(await dataTableTitle.getText()).toBe(await card2Title.getText())
+        })
     })
 
 });
