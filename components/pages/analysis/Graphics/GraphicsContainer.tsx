@@ -10,12 +10,14 @@ import useWindowSize, { LG } from 'hooks/useWindowSize'
 
 const GraphicsContainer = () => {
   const dispatch = useDispatch()
-  const [error, setError] = useState<string | null>(null)
   const dataCatalog = useSelector((state: IReduxState) => state.series.dataCatalog)
   const isOpenDataTable = useSelector((state: IReduxState) => !!state.series.openedTableSerie)
-  const { deviceSize } = useWindowSize()
 
+  const { deviceSize } = useWindowSize()
   const responsive = deviceSize <= LG
+
+  const [error, setError] = useState<string | null>(null)
+
 
   const loadCatalog = async () => {
     try {

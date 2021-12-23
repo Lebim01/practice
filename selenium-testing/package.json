@@ -1,0 +1,21 @@
+{
+  "name": "selenium-testing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --config ./jest.config.json"
+  },
+  "dependencies": {
+    "clsx": "^1.1.1",
+    "selenium-webdriver": "^4.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@jest/globals": "^27.4.4",
+    "babel-jest": "^27.4.5",
+    "chromedriver": "^96.0.0",
+    "jest": "^27.4.5"
+  }
+}

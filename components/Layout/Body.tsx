@@ -17,7 +17,7 @@ const Body = ({ children, ...props }: Props) => {
 
   return (
     <BodyContainer {...props}>
-      {!isMobile && <SidebarItem path={path} sidemenu={false} />}
+      {!isMobile && <SidebarItem className='route-title' path={path} sidemenu={false} />}
       {children}
     </BodyContainer>
   )

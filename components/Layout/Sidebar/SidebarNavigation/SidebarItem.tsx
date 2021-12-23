@@ -2,6 +2,7 @@ import { usePath } from 'context/path'
 import IPath from 'interfaces/IPath'
 import styled from 'styled-components'
 import Link from 'next/Link'
+import clsx from 'clsx';
 
 interface Props {
   path: IPath;
@@ -23,7 +24,7 @@ const SidebarItem = ({ sidemenu = true, ...props }: Props) => {
 
   return (
     <Link href={props.path.url} shallow>
-      <SidebarItemContainer active={props.path.url === currentPath.url} sidemenu={sidemenu} className={props.className}>
+      <SidebarItemContainer active={props.path.url === currentPath.url} sidemenu={sidemenu} className={clsx("route-link", props.className)}>
         <SidebarItemColor color={props.path.color} />
         <SidebarItemText>{props.path.title}</SidebarItemText>
       </SidebarItemContainer>
@@ -52,7 +53,7 @@ const SidebarItemColor = styled.div`
   width: 16px;
 `
 
-const SidebarItemText = styled.div`
+const SidebarItemText = styled.span`
   margin-left: 7px;
   color: #FFFFFFD9;
 `

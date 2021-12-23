@@ -11,10 +11,10 @@ const SeriesDataTable = () => {
   const responsive = deviceSize <= LG
 
   return (
-    <SerieDataTable responsive={responsive}>
+    <SerieDataTable responsive={responsive} id="data-table">
       <DataTableTitle>
         <BsListUl size={20} />
-        <span>{datatable?.name}</span>
+        <span id="data-table-title">{datatable?.name}</span>
       </DataTableTitle>
       <Table>
         <thead>

@@ -10,7 +10,7 @@ interface Props {
 const SeriesCatalog = (props: Props) => {
   return (
     <Card style={{ flex: 1 }}>
-      <Card.Header>{props.catalog.name}</Card.Header>
+      <Card.Header className="catalog-name">{props.catalog.name}</Card.Header>
       <CustomBody>
         {props.catalog.series.map((serie, idx) => 
           <SerieChart serie={serie} key={serie.serieId} />

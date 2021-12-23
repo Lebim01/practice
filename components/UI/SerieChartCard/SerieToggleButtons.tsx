@@ -26,10 +26,10 @@ const SerieToggleButtons = (props: Props) => {
 
   return (
     <>
-      <CustomButton active={isOpenChart} variant="outline-dark" onClick={_toggleChart}>
+      <CustomButton className="serie-toggle-chart" active={isOpenChart} variant="outline-dark" onClick={_toggleChart}>
         <BiLineChart size={20} />
       </CustomButton>
-      <CustomButton active={isOpenTable} variant='outline-dark' onClick={_toggleDataTable}>
+      <CustomButton className="serie-toggle-data-table" active={isOpenTable} variant='outline-dark' onClick={_toggleDataTable}>
         <BsListUl size={20} />
       </CustomButton>
     </>

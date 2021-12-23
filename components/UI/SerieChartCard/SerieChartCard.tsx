@@ -69,7 +69,7 @@ const SerieChartCard = React.memo((props: Props) => {
           </>
         }
         <HeaderRight>
-          <CustomButtonOutlined variant='outline-dark' onClick={_toggleSerie}>
+          <CustomButtonOutlined className="serie-toggle-card" variant='outline-dark' onClick={_toggleSerie}>
             {isOpenCard ? <BsChevronDown /> : <BsChevronLeft />}
           </CustomButtonOutlined>
         </HeaderRight>
