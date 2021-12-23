@@ -94,7 +94,7 @@ describe('Analysis page', () => {
             const toggleList1 = await card1.findElement(By.css('.serie-toggle-data-table'))
             const toggleList2 = await card2.findElement(By.css('.serie-toggle-data-table'))
 
-            toggleList1.click()
+            driver.executeScript("arguments[0].click()", toggleList1); 
             await wait(500)
 
             const datatable = await findElementBy(HomePage.dataTableTitle)
