@@ -50,4 +50,19 @@ describe('Analysis page', () => {
         });
     })
 
+    describe('Toogle buttons', () => {
+        test('toggle card 1', async () => {
+            const card = await findElementBy(By.css('.serie-cards .serie-card:nth-child(1)'))
+            const body = await card.findElement(By.css('.card-body'))
+            const toggleButton = await card.findElement(By.css('.serie-toggle-card'))
+            expect(await body.isDisplayed()).toBe(false)
+            toggleButton.click()
+            await wait(1 * 1000)
+            expect(await body.isDisplayed()).toBe(true)
+            toggleButton.click()
+            await wait(1 * 1000)
+            expect(await body.isDisplayed()).toBe(false)
+        });
+    })
+
 });

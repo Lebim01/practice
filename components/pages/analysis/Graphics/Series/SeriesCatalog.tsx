@@ -11,7 +11,7 @@ const SeriesCatalog = (props: Props) => {
   return (
     <Card style={{ flex: 1 }}>
       <Card.Header className="catalog-name">{props.catalog.name}</Card.Header>
-      <CustomBody>
+      <CustomBody className="serie-cards">
         {props.catalog.series.map((serie, idx) => 
           <SerieChart serie={serie} key={serie.serieId} />
         )}

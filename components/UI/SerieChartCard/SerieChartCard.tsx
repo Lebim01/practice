@@ -51,7 +51,7 @@ const SerieChartCard = React.memo((props: Props) => {
   const responsive = deviceSize <=  MD
 
   return (
-    <CustomCard>
+    <CustomCard className="serie-card">
       <CustomHeader>
         {props.serie.name}
         {!responsive && 
