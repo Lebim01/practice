@@ -63,6 +63,26 @@ describe('Analysis page', () => {
             await wait(1 * 1000)
             expect(await body.isDisplayed()).toBe(false)
         });
+
+        test('toggle chart', async () => {
+            const card = await findElementBy(By.css('.serie-cards .serie-card:nth-child(1)'))
+            const toggleButton = await card.findElement(By.css('.serie-toggle-card'))
+            toggleButton.click() // open card
+            await wait(500)
+
+            const toggleChart = await card.findElement(By.css('.serie-toggle-chart'))
+            try {
+                await card.findElement(By.css('.recharts-responsive-container'))
+                expect(false).toBe(true)
+            }catch(err){
+                expect(true).toBe(true)
+            }
+
+            toggleChart.click()
+            await wait(500)
+
+            await card.findElement(By.css('.recharts-responsive-container'))
+        })
     })
 
 });
